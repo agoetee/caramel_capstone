@@ -1,13 +1,19 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 from datetime import date, time
+import models
+from database import engine
+
 
 
 app = FastAPI()
 
+models.Base.metadata.create_all(bind=engine)
+
 # Entries Class from BaseModel
 
 class Entries(BaseModel):
+    id : int
     create_date: date
     create_time: time
     text: str
