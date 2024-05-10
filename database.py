@@ -22,9 +22,11 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-#def get_db():
-#    db = SessionLocal()
-#    try:
-#        yield db
-#    finally:
-#        db.close()
+
+#Function to provide a database session to route handlers
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
