@@ -1,7 +1,8 @@
-from fastapi import APIRouter,Depends
+from fastapi import APIRouter,Depends, HTTPException
 from database import get_db
 from sqlalchemy.orm import Session
 import models
+from typing import Dict
 
 
 
@@ -11,7 +12,7 @@ api_router = APIRouter(prefix="/api")
 @api_router.post("/create")
 def create_entry(entry: models.Entries, db: Session = Depends(get_db)):
     new_entry = models.Entry(
-        create_date=entry.create_date, create_time=entry.create_time, text=entry.text, no_of_calories=entry.no_of_calorie
+        create_date=entry.create_date, create_time=entry.create_time, text=entry.text, no_of_calories=entry.no_of_calories
     )
     db.add(new_entry)
     db.commit()
@@ -21,12 +22,44 @@ def create_entry(entry: models.Entries, db: Session = Depends(get_db)):
 #Get requests 
 ## Request All Entries
 @api_router.get("/entries")
-def get_entries_(db_: Session = Depends(get_db)):
-    entries_ = db_.query(models.Entry).all()
-    return entries_
+def get_entries_(db: Session = Depends(get_db)):
+    entries = db.query(models.Entry).all()
+    return entries
 
 ## Request Single Entry
-@api_router.get("/entries/{id}")
-def get_one_entry(id: int, db_: Session = Depends(get_db)):
-    entry_ = db_.query(models.Entry).filter(models.Entry.id == id).first()
-    return entry_
+@api_router.get("/entries/{id}", status_code=201)
+def get_one_entry(id: int, db: Session = Depends(get_db)):
+    entry = db.query(models.Entry).filter(models.Entry.id == id).first()
+    if not entry:
+        raise HTTPException(status_code=404, detail="Entry not found")
+    return entry
+
+## Delete Single Entry
+@api_router.delete("/entry/{id}")
+def delete_one_entry(id: int, db: Session = Depends(get_db)):
+    entry = db.query(models.Entry).filter(models.Entry.id == id).first()
+    if entry:
+        db.delete(entry)
+        db.commit()
+        return {"message": "Entry deleted successfully"}
+    else:
+        raise HTTPException(status_code=404, detail="Entry not found")
+
+## Full Update or Put request
+@api_router.put("/entry/{id}")
+def update_one_entry(id: int, entry: models.UpdateEntries, db: Session = Depends(get_db)):
+    update_dict = entry.model_dump(exclude_unset=True)
+    the_entry = db.query(models.Entry).filter(models.Entry.id == id).update(update_dict)
+    if not the_entry:
+        raise HTTPException(status_code=404, detail=f"Entry with id {id} not found")
+    db.commit()
+    return 'updated'
+    
+## Help from HUB 
+#    try:
+#        to_dict = entry.model_dump(exclude_unset=True)
+#        db.query(models.Entry).filter(models.Entry.id == id).update(to_dict)
+#        db.commit()
+#        return {"message": "Entry updated successfully"}
+#    except Exception as e:
+#        raise HTTPException(status_code=500, detail=str(e))

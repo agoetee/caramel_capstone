@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 from database import Base
 from pydantic import BaseModel
 from datetime import date, time
+from typing import Optional
 
 # Entries Class from BaseModel
 class Entries(BaseModel):
@@ -10,7 +11,11 @@ class Entries(BaseModel):
     create_date: date = None
     create_time: time = None
     text: str
-    no_of_calorie : float
+    no_of_calories : float
+
+class UpdateEntries(BaseModel):
+    text: Optional[str] = None
+    no_of_calories : Optional[float] = None
 
 class Entry(Base):
     __tablename__ = "entries"
