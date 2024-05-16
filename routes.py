@@ -1,8 +1,9 @@
 from fastapi import APIRouter,Depends, HTTPException
 from database import get_db
 from sqlalchemy.orm import Session
-import models
-from typing import Dict
+import models, hashing
+
+
 
 
 
@@ -63,3 +64,20 @@ def update_one_entry(id: int, entry: models.UpdateEntries, db: Session = Depends
 #        return {"message": "Entry updated successfully"}
 #    except Exception as e:
 #        raise HTTPException(status_code=500, detail=str(e))
+
+"""
+USERS ROUTES
+"""
+
+
+
+@api_router.post("/users")
+def create_user(entry: models.UserBase, db: Session = Depends(get_db)):
+    new_user = models.User(
+        name=entry.name, username=entry.username, email=entry.email, password=hashing.Hash.bcrypt(entry.password)
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
+    
