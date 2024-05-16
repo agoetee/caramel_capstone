@@ -1,9 +1,11 @@
-from sqlalchemy import Column, Integer, String, Sequence
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from database import Base
 from pydantic import BaseModel
 from datetime import date, time
 from typing import Optional
+
+
 
 # Entries Class from BaseModel
 class Entries(BaseModel):
@@ -20,9 +22,26 @@ class UpdateEntries(BaseModel):
 class Entry(Base):
     __tablename__ = "entries"
 
-    id = Column(Integer, Sequence('item_id_seg', start=1),primary_key=True, autoincrement=True)
+    id = Column(Integer,primary_key=True, autoincrement=True)
     create_date = Column(String)
     create_time = Column(String)
     text = Column(String)
     no_of_calories = Column(Integer)
 
+
+class UserBase(BaseModel):
+    id: int
+    name: str
+    username: str
+    email: str
+    password: str
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer,primary_key=True, autoincrement=True)
+    name = Column(String)
+    username = Column(String)
+    email = Column(String)
+    password = Column(String)

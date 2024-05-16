@@ -26,3 +26,30 @@ This is a project for the Slightly Techie School Backend. I am in the Caramel Gr
  It uses a method that involves tracking and quantifying the energy content of the foods and beverages we consume.
 
  This is the main feature of the calorie tracking app, with this feature you can easily log your daily food and beverage intake to monitor your calorie consumption accurately.
+
+ # Notes
+
+ ## Indexing
+ For the start, I needed to start numbering the indexes at 1 instead of the usual 0. 
+ My research took me to an SQLalchemy module called `Sequence` which takes 2 arguments:
+ 1. The variable to be indexed `item_id_seq`
+ 2 The number to start at
+
+ ### Outcome
+ The `Sequence` module worked well if there is one and only one table. If there is an additional table, the index will continue where the first table ended in the second table.
+ Example if Table_1 ended at index 8 and Table_2 is engaged, first item in Table2 will be 9 is Table_1 ended at 8
+
+ This is not my use case so I discarded this module
+
+ I had to use `autoincrement=True` in the id field of the table. This works very well
+
+ ## Module bcrypt
+ The current version of `bcryp` gave an error when hashing the password. 
+ 
+ From the checks in the forum, there is a bug on `passlib` and therefore the version must be maintained at 4.0.1.
+ 
+ This information is found [here](https://github.com/langflow-ai/langflow/issues/1173).
+
+ Command to revert the version of **bcrypt**
+
+ `pip install bcrypt==4.0.1`
