@@ -29,6 +29,11 @@ class Entry(Base):
     no_of_calories = Column(Integer)
 
 
+class ShowEntry(BaseModel):
+    text: str
+    no_of_calories: float
+
+
 class UserBase(BaseModel):
     id: int
     name: str
@@ -45,3 +50,10 @@ class User(Base):
     username = Column(String)
     email = Column(String)
     password = Column(String)
+
+
+class ShowUser(BaseModel):
+    username: str
+    email: str
+
+

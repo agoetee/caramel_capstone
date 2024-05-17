@@ -10,7 +10,7 @@ import models, hashing
 api_router = APIRouter(prefix="/api")
 
 #Post request
-@api_router.post("/create")
+@api_router.post("/create", response_model=models.ShowEntry)
 def create_entry(entry: models.Entries, db: Session = Depends(get_db)):
     new_entry = models.Entry(
         create_date=entry.create_date, create_time=entry.create_time, text=entry.text, no_of_calories=entry.no_of_calories
@@ -71,7 +71,7 @@ USERS ROUTES
 
 
 
-@api_router.post("/users")
+@api_router.post("/users", response_model=models.ShowUser)
 def create_user(entry: models.UserBase, db: Session = Depends(get_db)):
     new_user = models.User(
         name=entry.name, username=entry.username, email=entry.email, password=hashing.Hash.bcrypt(entry.password)
@@ -80,4 +80,11 @@ def create_user(entry: models.UserBase, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return new_user
+
+@api_router.get("/users/{id}")
+def get_user(id: int, db: Session=Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail=f"User with id {id} not found")
+    return user
     
