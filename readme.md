@@ -76,10 +76,41 @@ def get_entries_(db: Session = Depends(get_db)):
 
  #### With tags
 
- <img src="/assets/tags.png" alt="Tags Showing" width="80" height="60">
+ <img src="/assets/tags.png" alt="Tags Showing" width="800" height="600">
 
- ### Collapsed tags
+ #### Collapsed tags
 
- <img src="/assets/tag_collapse.png" alt="collapsed tags" width="80" height="60">
+ <img src="/assets/tag_collapse.png" alt="collapsed tags" width="800" height="600">
+
+
+## Relationships
+
+### Theory
+
+A relation is used to describe the relationship that exists between tables in a relational database. 
+
+The __relationship__ between two tables presuposses that one one of them has a foreign key that references the primary key of another table.
+
+_One-to-many_ is when one record in Table_1 is related to one or more records in Table_2. The reverse is `False`. One record in Table_2 cannot be related to more than one record in Table_1.
+
+__How to:__ For one city, we could have many different customers located in it. And the other way around — For one customer, we can have only one city it’s located in.
+
+__Example__: **Customer and City**
+Storing a list of all customers in the database
+For each customer, we want to store their city of location
+__Fact is__ A customer will be in exactly __one__ city.
+
+__Current Case : Calory Entry__
+A user can make many entries. For every entry, there is _one_ user
+
+Some key terms to be searched from the __[SQLAlchemy](https://docs.sqlalchemy.org/en/20/orm/relationship_api.html#sqlalchemy.orm.relationship)__ website. The compiled document is on the [FASTapi relation section](https://fastapi.tiangolo.com/tutorial/sql-databases/). These are
+
+- relationship
+
+- Foreign Key
+
+#### Steps
+
+- 
 
 
