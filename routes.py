@@ -11,9 +11,9 @@ api_router = APIRouter(prefix="/api")
 
 #Post request
 @api_router.post("/create", response_model=models.ShowEntry, tags=["entries"])
-def create_entry(entry: models.Entries, db: Session = Depends(get_db)):
+def create_entry(entry: models.EntriesBase, db: Session = Depends(get_db)):
     new_entry = models.Entry(
-        create_date=entry.create_date, create_time=entry.create_time, text=entry.text, no_of_calories=entry.no_of_calories
+        create_date=entry.create_date, create_time=entry.create_time, text=entry.text, no_of_calories=entry.no_of_calories, user_id=1
     )
     db.add(new_entry)
     db.commit()
