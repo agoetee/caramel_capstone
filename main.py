@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-import models
+from model import models
 from database import engine
-from routes import api_router
+from routers import entries, user
 
 app = FastAPI()
 
@@ -14,4 +14,5 @@ models.Base.metadata.create_all(bind=engine)
 def base():
     return {"info": "Hi there"}
 
-app.include_router(api_router)
+app.include_router(entries.api_router)
+app.include_router(user.api_router)
