@@ -49,3 +49,9 @@ class ShowEntry(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class Login(BaseModel):
+    username: str
+    email: str
+    password: str

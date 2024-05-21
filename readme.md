@@ -76,11 +76,11 @@ def get_entries_(db: Session = Depends(get_db)):
 
  #### With tags
 
- <img src="/assets/tags.png" alt="Tags Showing" width="800" height="600">
+ <img src="/assets/tags.png" alt="Tags Showing" width="250" height="200">
 
  #### Collapsed tags
 
- <img src="/assets/tag_collapse.png" alt="collapsed tags" width="800" height="600">
+ <img src="/assets/tag_collapse.png" alt="collapsed tags" width="250" height="200">
 
 
 ## Relationships
@@ -111,6 +111,30 @@ Some key terms to be searched from the __[SQLAlchemy](https://docs.sqlalchemy.or
 
 #### Steps
 
-- 
+
+## Security
+
+### OAuth2 with Password and Hashing
+
+- [Link Here](https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/)
+
+#### Verifying the Hashed Password.
+
+In the `hashing.py` module, the method `verify()` needs to be created in the `class Hash:`
+
+In here, `hashed_password` and `plain_password` are passed as positional parameters.
+
+These parameters are __interchanged__ in the `.verify()` module in this way:
+
+```py
+def verify(hashed_password, plain_password):
+    return pwd_context.verify(plain_password, hashed_password)
+```
+Back in the Authentication decorator, existing password in the table comes before the requested password like so:
+
+```py
+if not Hash.verify(user.password, request.password):
+```
+
 
 
