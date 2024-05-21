@@ -2,7 +2,7 @@
 Contains endpoint for calorie Entries
 """
 
-from fastapi import APIRouter,Depends, HTTPException
+from fastapi import APIRouter,Depends, HTTPException, status
 from database import get_db
 from sqlalchemy.orm import Session
 from model import models, schemas
@@ -36,7 +36,7 @@ def get_entries_(db: Session = Depends(get_db)):
 def get_one_entry(id: int, db: Session = Depends(get_db)):
     entry = db.query(models.Entry).filter(models.Entry.id == id).first()
     if not entry:
-        raise HTTPException(status_code=404, detail="Entry not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Entry not found")
     return entry
 
 ## Delete Single Entry
