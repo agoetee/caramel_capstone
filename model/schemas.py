@@ -4,7 +4,7 @@ The schemas file contains Pydantic models
 
 from pydantic import BaseModel
 from datetime import date, time
-from typing import Optional, List
+from typing import Optional, List, Union
 
 
 
@@ -55,3 +55,13 @@ class Login(BaseModel):
     username: str
     email: str
     password: str
+
+
+"""Token Auth"""
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: Union[str, None] = None
