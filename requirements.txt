@@ -1,4 +1,5 @@
-fastapi=
+fastapi
 SQLAlchemy
 psycopg2-binary
 passlib
+pyjwt
